@@ -1,0 +1,72 @@
+version: '3.8'
+services:
+  postgres:
+    image: postgres:15
+    container_name: booking_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: booking
+    ports:
+      - '5432:5432'
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+
+  auth-service:
+    build:
+      context: ./services/auth-service
+    container_name: auth-service
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/booking
+    ports:
+      - '4000:4000'
+    depends_on:
+      - postgres
+
+  booking-service:
+    build:
+      context: ./services/booking-service
+    container_name: booking-service
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/booking
+    ports:
+      - '4001:4001'
+    depends_on:
+      - postgres
+
+  hotel-service:
+    build:
+      context: ./services/hotel-service
+    container_name: hotel-service
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/booking
+    ports:
+      - '4002:4002'
+    depends_on:
+      - postgres
+
+  payment-service:
+    build:
+      context: ./services/payment-service
+    container_name: payment-service
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/booking
+    ports:
+      - '4003:4003'
+    depends_on:
+      - postgres
+
+  review-service:
+    build:
+      context: ./services/review-service
+    container_name: review-service
+    environment:
+      DATABASE_URL: postgres://postgres:postgres@postgres:5432/booking
+    ports:
+      - '4004:4004'
+    depends_on:
+      - postgres
+
+volumes:
+  pgdata:
