@@ -30,8 +30,8 @@ yarn-error.log*
 Thumbs.db
 
 # AWS
-aws-exports.js
-aws-exports.ts
+# aws-exports.js
+# aws-exports.ts
 
 # Logs
 logs
